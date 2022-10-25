@@ -1,0 +1,5 @@
+rootProject.name = 'Sensors'
+include 'Repository'
+include 'Service'
+include 'Web'
+
