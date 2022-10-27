@@ -11,4 +11,10 @@ public class AbstractController {
     public AbstractController(AnswerMessage answerMessage) {
         this.answerMessage = answerMessage;
     }
+
+    protected void setAnswerMessage(String message, String code, String status) {
+        answerMessage.setMessage(message);
+        answerMessage.setCode(code);
+        answerMessage.setStatus(status);
+    }
 }
