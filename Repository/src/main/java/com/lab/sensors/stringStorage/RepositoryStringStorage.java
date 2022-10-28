@@ -10,5 +10,6 @@ public class RepositoryStringStorage {
     public static final String LOCATION = "location";
     public static final String DESCRIPTION = "description";
     public static final String PERCENT = "%";
+    public static final String LOGIN = "login";
 
 }
