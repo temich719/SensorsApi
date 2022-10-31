@@ -1,6 +1,7 @@
 package com.lab.sensors.controller;
 
 import com.lab.sensors.answer.AnswerMessage;
+import com.lab.sensors.dto.RoleUserDTO;
 import com.lab.sensors.dto.UserDTO;
 import com.lab.sensors.exception.InvalidPasswordException;
 import com.lab.sensors.exception.ServiceException;
@@ -48,14 +49,14 @@ public class UserController extends AbstractController{
     @ResponseStatus(HttpStatus.ACCEPTED)
     public AuthenticationResponse sighIn(@RequestBody AuthenticationRequest authenticationRequest) throws ServiceException, InvalidPasswordException {
         LOGGER.info("Login...");
-        UserDTO userDTO = userService.getUserByLogin(authenticationRequest.getLogin());
+        RoleUserDTO roleUserDTO = userService.getUserWithRole(authenticationRequest.getLogin());
         String token;
-        if (BCrypt.checkpw(authenticationRequest.getPassword(), userDTO.getPassword())){
+        if (BCrypt.checkpw(authenticationRequest.getPassword(), roleUserDTO.getPassword())){
             token = jwtProvider.generateToken(authenticationRequest.getLogin());
         } else {
             throw new InvalidPasswordException("Wrong password");
         }
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, roleUserDTO.getRole());
     }
 
 }
