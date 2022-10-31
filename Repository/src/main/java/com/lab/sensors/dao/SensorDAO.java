@@ -20,4 +20,6 @@ public interface SensorDAO {
 
     Optional<Sensor> getSensorById(long id);
 
+    long getSensorsCount();
+
 }

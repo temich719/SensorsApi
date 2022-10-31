@@ -19,4 +19,6 @@ public interface SensorService {
 
     void addSensor(SensorDTO sensorDTO);
 
+    long getDefaultPagesCount();
+
 }

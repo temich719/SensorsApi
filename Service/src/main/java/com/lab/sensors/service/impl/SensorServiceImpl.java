@@ -67,4 +67,27 @@ public class SensorServiceImpl implements SensorService {
     public void addSensor(SensorDTO sensorDTO) {
         sensorDAO.addSensor(sensorMapper.mapToSensorFromDTO(sensorDTO));
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public long getDefaultPagesCount() {
+        long sensorsCount = sensorDAO.getSensorsCount();
+        return calculatePageCountBySensorsCount(sensorsCount);
+    }
+
+    private long calculatePageCountBySensorsCount(long sensorsCount) {
+        long pages;
+        if (sensorsCount % 4 == 0) {
+            pages = sensorsCount / 4;
+        } else {
+            pages = sensorsCount / 4;
+            long diff = sensorsCount - pages * 4;
+            if (pages == 0) {
+                pages = 1;
+            } else if (diff > 0) {
+                pages++;
+            }
+        }
+        return pages;
+    }
 }

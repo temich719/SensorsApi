@@ -98,4 +98,13 @@ public class SensorDAOImpl implements SensorDAO {
     public Optional<Sensor> getSensorById(long id) {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(Sensor.class, id));
     }
+
+    @Override
+    public long getSensorsCount() {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Sensor> sensorRoot = criteriaQuery.from(Sensor.class);
+        return session.createQuery(criteriaQuery.select(criteriaBuilder.count(sensorRoot))).getSingleResult();
+    }
 }

@@ -6,6 +6,7 @@ import com.lab.sensors.dto.SensorDTO;
 import com.lab.sensors.exception.InvalidInputDataException;
 import com.lab.sensors.exception.NoSuchIdException;
 import com.lab.sensors.exception.ServiceException;
+import com.lab.sensors.model.SensorsCount;
 import com.lab.sensors.service.SensorService;
 import com.lab.sensors.validator.DTOValidator;
 import org.apache.log4j.Logger;
@@ -37,6 +38,13 @@ public class SensorsController extends AbstractController {
         super(answerMessage);
         this.sensorService = sensorService;
         this.validator = validator;
+    }
+
+    @GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public SensorsCount getSensorsCount() {
+        LOGGER.info("Getting sensors count...");
+        return new SensorsCount(sensorService.getDefaultPagesCount());
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
