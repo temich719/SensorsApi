@@ -75,6 +75,12 @@ public class SensorServiceImpl implements SensorService {
         return calculatePageCountBySensorsCount(sensorsCount);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public long getSensorsCount() {
+        return sensorDAO.getSensorsCount();
+    }
+
     private long calculatePageCountBySensorsCount(long sensorsCount) {
         long pages;
         if (sensorsCount % 4 == 0) {

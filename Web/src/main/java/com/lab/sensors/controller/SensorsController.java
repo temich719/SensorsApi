@@ -44,6 +44,13 @@ public class SensorsController extends AbstractController {
     @ResponseStatus(HttpStatus.OK)
     public SensorsCount getSensorsCount() {
         LOGGER.info("Getting sensors count...");
+        return new SensorsCount(sensorService.getSensorsCount());
+    }
+
+    @GetMapping(value = "/pagesCount", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public SensorsCount getSensorsPageCount() {
+        LOGGER.info("Getting sensors page count...");
         return new SensorsCount(sensorService.getDefaultPagesCount());
     }
 

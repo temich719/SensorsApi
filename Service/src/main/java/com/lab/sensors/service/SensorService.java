@@ -21,4 +21,6 @@ public interface SensorService {
 
     long getDefaultPagesCount();
 
+    long getSensorsCount();
+
 }
