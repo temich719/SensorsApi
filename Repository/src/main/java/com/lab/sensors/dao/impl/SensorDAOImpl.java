@@ -40,6 +40,20 @@ public class SensorDAOImpl implements SensorDAO {
     }
 
     @Override
+    public long getFilteredSensorsCount(String keyword) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Sensor> sensorRoot = criteriaQuery.from(Sensor.class);
+        ParameterExpression<String> parameterExpression = criteriaBuilder.parameter(String.class);
+        Predicate orCondition = getPredicate(parameterExpression, criteriaBuilder, sensorRoot);
+        criteriaQuery.select(criteriaBuilder.count(sensorRoot)).where(orCondition);
+        Query<Long> query = session.createQuery(criteriaQuery);
+        query.setParameter(parameterExpression, PERCENT + keyword + PERCENT);
+        return query.getSingleResult();
+    }
+
+    @Override
     public Optional<List<Sensor>> searchSensorsByKeyWord(String keyword, int page, int size) {
         Optional<List<Sensor>> optionalSensors;
         try {
@@ -48,14 +62,7 @@ public class SensorDAOImpl implements SensorDAO {
             CriteriaQuery<Sensor> criteriaQuery = criteriaBuilder.createQuery(Sensor.class);
             Root<Sensor> sensorRoot = criteriaQuery.from(Sensor.class);
             ParameterExpression<String> parameterExpression = criteriaBuilder.parameter(String.class);
-            Predicate likeName = criteriaBuilder.like(sensorRoot.get(NAME), parameterExpression);
-            Predicate likeModel = criteriaBuilder.like(sensorRoot.get(MODEL), parameterExpression);
-            Predicate likeType = criteriaBuilder.like(sensorRoot.get(TYPE), parameterExpression);
-            Predicate likeRange = criteriaBuilder.like(sensorRoot.get(RANGE), parameterExpression);
-            Predicate likeUnit = criteriaBuilder.like(sensorRoot.get(UNIT), parameterExpression);
-            Predicate likeLocation = criteriaBuilder.like(sensorRoot.get(LOCATION), parameterExpression);
-            Predicate likeDescription = criteriaBuilder.like(sensorRoot.get(DESCRIPTION), parameterExpression);
-            Predicate orCondition = criteriaBuilder.or(likeName, likeModel, likeType, likeRange, likeUnit, likeLocation, likeDescription);
+            Predicate orCondition = getPredicate(parameterExpression, criteriaBuilder, sensorRoot);
             criteriaQuery.select(sensorRoot).where(orCondition);
             Query<Sensor> query = session.createQuery(criteriaQuery);
             query.setParameter(parameterExpression, PERCENT + keyword + PERCENT);
@@ -106,5 +113,16 @@ public class SensorDAOImpl implements SensorDAO {
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
         Root<Sensor> sensorRoot = criteriaQuery.from(Sensor.class);
         return session.createQuery(criteriaQuery.select(criteriaBuilder.count(sensorRoot))).getSingleResult();
+    }
+
+    private Predicate getPredicate(ParameterExpression<String> parameterExpression, CriteriaBuilder criteriaBuilder, Root<Sensor> sensorRoot) {
+        Predicate likeName = criteriaBuilder.like(sensorRoot.get(NAME), parameterExpression);
+        Predicate likeModel = criteriaBuilder.like(sensorRoot.get(MODEL), parameterExpression);
+        Predicate likeType = criteriaBuilder.like(sensorRoot.get(TYPE), parameterExpression);
+        Predicate likeRange = criteriaBuilder.like(sensorRoot.get(RANGE), parameterExpression);
+        Predicate likeUnit = criteriaBuilder.like(sensorRoot.get(UNIT), parameterExpression);
+        Predicate likeLocation = criteriaBuilder.like(sensorRoot.get(LOCATION), parameterExpression);
+        Predicate likeDescription = criteriaBuilder.like(sensorRoot.get(DESCRIPTION), parameterExpression);
+        return criteriaBuilder.or(likeName, likeModel, likeType, likeRange, likeUnit, likeLocation, likeDescription);
     }
 }

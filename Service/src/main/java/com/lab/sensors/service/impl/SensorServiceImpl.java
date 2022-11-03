@@ -77,6 +77,12 @@ public class SensorServiceImpl implements SensorService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public long getFilteredSensorsCount(String keyword) {
+        return sensorDAO.getFilteredSensorsCount(keyword);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public long getSensorsCount() {
         return sensorDAO.getSensorsCount();
     }

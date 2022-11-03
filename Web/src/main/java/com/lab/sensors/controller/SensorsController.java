@@ -40,6 +40,13 @@ public class SensorsController extends AbstractController {
         this.validator = validator;
     }
 
+    @GetMapping(value = "/filteredCount/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public SensorsCount getFilteredSensorsCount(@PathVariable String keyword) {
+        LOGGER.info("Getting filtered sensors count...");
+        return new SensorsCount(sensorService.getFilteredSensorsCount(keyword));
+    }
+
     @GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public SensorsCount getSensorsCount() {
@@ -74,6 +81,7 @@ public class SensorsController extends AbstractController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerMessage addSensor(@Valid @RequestBody SensorDTO sensorDTO, BindingResult bindingResult) throws InvalidInputDataException {
+        System.out.println("add:" + sensorDTO);
         LOGGER.info("Adding new sensor...");
         validator.validate(sensorDTO, bindingResult);
         sensorService.addSensor(sensorDTO);

@@ -1,6 +1,5 @@
 package com.lab.sensors.allowedDTOValues;
 
-import com.lab.sensors.dto.SensorDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +12,7 @@ public class AllowedDTOValuesStorage {
 
     private static final String BAR = "bar";
     private static final String VOLTAGE_UNIT = "voltage";
-    private static final String CELSIUS = "℃";
+    private static final String CELSIUS = "\u2103";
     private static final String PERCENT = "%";
 
     public boolean checkDTOType(String type) {

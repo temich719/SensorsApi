@@ -23,4 +23,6 @@ public interface SensorService {
 
     long getSensorsCount();
 
+    long getFilteredSensorsCount(String keyword);
+
 }

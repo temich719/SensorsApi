@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.GET, "/sensors", "/sensors/*").hasAnyRole(USER_ROLE, ADMIN_ROLE)
+                .antMatchers(HttpMethod.GET, "/sensors", "/sensors/*", "/sensors/**").hasAnyRole(USER_ROLE, ADMIN_ROLE)
                 .antMatchers(HttpMethod.POST, "/sensors").hasRole(ADMIN_ROLE)
                 .antMatchers(HttpMethod.DELETE, "/sensors/*").hasRole(ADMIN_ROLE)
                 .antMatchers(HttpMethod.PATCH, "/sensors/*").hasRole(ADMIN_ROLE)
